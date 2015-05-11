@@ -108,6 +108,36 @@ describe ConveyorBelt::MassOperation do
 
     end
 
+    describe "and there is one operation with a target that CANNOT be found" do
+
+      let(:operation1) { Struct.new(:target_id, :target_found?).new(random_string, false) }
+
+      let(:operations) { [operation1] }
+
+      before do
+        mass_operation.stubs(:operations).returns operations
+        contract.stubs :start_mass_operation
+        contract.stubs :execute_single_step
+        contract.stubs :ignore_single_step
+      end
+
+      it "should note that work is to be executed" do
+        contract.expects(:start_mass_operation).with mass_operation
+        mass_operation.execute
+      end
+
+      it "should NOT execute the step" do
+        contract.stubs(:execute_single_step).raises 'should not have been called'
+        mass_operation.execute
+      end
+
+      it "should note that the missing step has been ignored" do
+        contract.expects(:ignore_single_step).with operation1.target_id
+        mass_operation.execute
+      end
+
+    end
+
   end
 
 end
