@@ -31,7 +31,7 @@ module ConveyorBelt
       @considered = []
       tasks_to_execute.each do |t|
         contract.send t[:task], t[:target_id]
-        @considered << t[:target_id]
+        @considered << { target_id: t[:target_id] }
       end
     end
 

@@ -182,7 +182,7 @@ describe ConveyorBelt::MassOperation do
 
       it "should not which targets had been considered" do
         mass_operation.execute
-        considered = mass_operation.considered
+        considered = mass_operation.considered.map { |x| x[:target_id] }
         considered.count.must_equal 2
         considered.include? operation1.target_id
         considered.include? operation2.target_id
