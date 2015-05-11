@@ -138,6 +138,37 @@ describe ConveyorBelt::MassOperation do
 
     end
 
+    describe "and there are two operations" do
+
+      let(:operation1) { Struct.new(:target_id, :target_found?).new(random_string, true) }
+      let(:operation2) { Struct.new(:target_id, :target_found?).new(random_string, false) }
+
+      let(:operations) { [operation1, operation2] }
+
+      before do
+        mass_operation.stubs(:operations).returns operations
+        contract.stubs :start_mass_operation
+        contract.stubs :execute_single_step
+        contract.stubs :ignore_single_step
+      end
+
+      it "should note that work is to be executed" do
+        contract.expects(:start_mass_operation).with mass_operation
+        mass_operation.execute
+      end
+
+      it "should execute the found step" do
+        contract.expects(:execute_single_step).with operation1.target_id
+        mass_operation.execute
+      end
+
+      it "should ignore the step that cannot be found" do
+        contract.expects(:ignore_single_step).with operation2.target_id
+        mass_operation.execute
+      end
+
+    end
+
   end
 
 end

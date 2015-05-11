@@ -22,12 +22,13 @@ module ConveyorBelt
     end
 
     def execute
-      operation = operations.first
       contract.start_mass_operation self
-      if operation.target_found?
-        contract.execute_single_step operation.target_id
-      else
-        contract.ignore_single_step operation.target_id
+      operations.each do |operation|
+        if operation.target_found?
+          contract.execute_single_step operation.target_id
+        else
+          contract.ignore_single_step operation.target_id
+        end
       end
     end
 
