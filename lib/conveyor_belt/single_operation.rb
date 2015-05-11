@@ -1,6 +1,6 @@
 module ConveyorBelt
 
-  class Operation
+  class SingleOperation
 
     attr_reader :target, :contract
 

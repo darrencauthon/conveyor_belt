@@ -41,7 +41,7 @@ describe ConveyorBelt::MassOperation do
 
             it "should be a list of single operations" do
               result.operations
-                    .each { |r| r.is_a?(ConveyorBelt::Operation).must_equal true }
+                    .each { |r| r.is_a?(ConveyorBelt::SingleOperation).must_equal true }
             end
 
             it "should pass the target id of each operation" do
