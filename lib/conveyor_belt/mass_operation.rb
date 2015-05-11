@@ -17,6 +17,10 @@ module ConveyorBelt
       end
     end
 
+    def operations
+      list.map { |x| ConveyorBelt::Operation.new(x, contract: contract) }
+    end
+
   end
 
 end

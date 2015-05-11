@@ -33,6 +33,32 @@ describe ConveyorBelt::MassOperation do
             result.list.must_equal list
           end
 
+          describe "operations" do
+
+            it "should have a list of single operations" do
+              result.operations.count.must_equal 3
+            end
+
+            it "should be a list of single operations" do
+              result.operations
+                    .each { |r| r.is_a?(ConveyorBelt::Operation).must_equal true }
+            end
+
+            it "should pass the target id of each operation" do
+              ids = result.operations.map { |x| x.target }
+              ids.include?('1').must_equal true
+              ids.include?('2').must_equal true
+              ids.include?('3').must_equal true
+            end
+
+            it "should retain a link to the original contract" do
+              result.operations.each do |operation|
+                operation.contract.must_be_same_as contract
+              end
+            end
+
+          end
+
         end
 
       end
