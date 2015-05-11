@@ -181,8 +181,14 @@ describe ConveyorBelt::MassOperation do
         mass_operation.stubs(:considered).returns [operation1.target_id, operation2.target_id]
       end
 
-      it "do nothing with the contract" do
-        mass_operation.execute
+      it "do throw an error that the contract has already been started" do
+        message = begin
+                    mass_operation.execute
+                    nil
+                  rescue RuntimeError => ex
+                    ex.message
+                  end
+        message.must_equal 'This mass operation has already started.'
       end
 
     end
