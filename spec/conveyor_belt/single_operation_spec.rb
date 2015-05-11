@@ -34,7 +34,7 @@ describe ConveyorBelt::SingleOperation do
       before { operation.stubs(:target).returns target }
 
       it "should return true" do
-        operation.found?.must_equal true
+        operation.target_found?.must_equal true
       end
 
     end
@@ -44,7 +44,7 @@ describe ConveyorBelt::SingleOperation do
       before { operation.stubs(:target).returns nil }
 
       it "should return true" do
-        operation.found?.must_equal false
+        operation.target_found?.must_equal false
       end
 
     end
