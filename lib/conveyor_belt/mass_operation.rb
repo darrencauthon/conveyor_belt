@@ -4,12 +4,13 @@ module ConveyorBelt
 
   class MassOperation
 
-    attr_reader :contract, :list, :id
+    attr_reader :contract, :list, :id, :considered
 
     def initialize args
       @contract = args[:contract]
       @list     = args[:list]
       @id       = args[:id] || SecureRandom.uuid
+      @considered = args[:considered] || []
     end
 
     def dump
@@ -23,10 +24,10 @@ module ConveyorBelt
 
     def self.load data
       data = JSON.parse data
-      new( { contract: data['contract'],
-             list:     data['list'],
-             id:       data['id'] } )
-
+      new( { contract:   data['contract'],
+             list:       data['list'],
+             id:         data['id'],
+             considered: data['considered'] } )
     end
 
     def self.with contract
@@ -35,10 +36,6 @@ module ConveyorBelt
           MassOperation.new(contract: contract, list: list)
         end
       end
-    end
-
-    def considered
-      @considered ||= []
     end
 
     def operations

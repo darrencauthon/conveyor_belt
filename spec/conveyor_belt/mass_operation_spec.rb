@@ -252,6 +252,16 @@ describe ConveyorBelt::MassOperation do
         considered.include? operation2.target_id
       end
 
+      describe "dumping and loading" do
+        it "should allow me to deconstruct and reconstruct the mass operation" do
+          mass_operation.execute
+
+          data = mass_operation.dump
+          restored = ConveyorBelt::MassOperation.load data
+          restored.considered.must_equal mass_operation.considered
+        end
+      end
+
     end
 
     describe "and there are two operations, both of which have been considered" do
