@@ -136,6 +136,19 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
+      describe "and its is started again" do
+        it "do throw an error that the contract has already been started" do
+          mass_operation.execute
+          message = begin
+                      mass_operation.execute
+                      nil
+                    rescue RuntimeError => ex
+                      ex.message
+                    end
+          message.must_equal 'This mass operation has already started.'
+        end
+      end
+
     end
 
     describe "and there are two operations" do
@@ -165,6 +178,14 @@ describe ConveyorBelt::MassOperation do
       it "should ignore the step that cannot be found" do
         contract.expects(:ignore_single_step).with operation2.target_id
         mass_operation.execute
+      end
+
+      it "should not which targets had been considered" do
+        mass_operation.execute
+        considered = mass_operation.considered
+        considered.count.must_equal 2
+        considered.include? operation1.target_id
+        considered.include? operation2.target_id
       end
 
     end
