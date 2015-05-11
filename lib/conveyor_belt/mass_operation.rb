@@ -39,7 +39,7 @@ module ConveyorBelt
 
     def tasks_to_execute
       operations.map do |operation|
-        task = operation.target_found? ? :execute_single_step : :ignore_single_step
+        task = operation.target_found? ? :execute_single_target : :ignore_single_target
         {
           task:      task,
           target_id: operation.target_id,

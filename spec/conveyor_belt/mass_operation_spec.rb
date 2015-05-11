@@ -86,7 +86,7 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation
-        contract.stubs :execute_single_step
+        contract.stubs :execute_single_target
       end
 
       it "should note that work is to be executed" do
@@ -94,13 +94,13 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
-      it "should exeucte the single step" do
-        contract.expects(:execute_single_step).with operation1.target_id
+      it "should exeucte the single target" do
+        contract.expects(:execute_single_target).with operation1.target_id
         mass_operation.execute
       end
 
-      it "should exeucte the single step AFTER the operation has started" do
-        contract.stubs(:execute_single_step).with do |_|
+      it "should exeucte the single target AFTER the operation has started" do
+        contract.stubs(:execute_single_target).with do |_|
           contract.stubs(:start_mass_operation).raises 'called in the wrong order'
         end
         mass_operation.execute
@@ -117,8 +117,8 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation
-        contract.stubs :execute_single_step
-        contract.stubs :ignore_single_step
+        contract.stubs :execute_single_target
+        contract.stubs :ignore_single_target
       end
 
       it "should note that work is to be executed" do
@@ -126,13 +126,13 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
-      it "should NOT execute the step" do
-        contract.stubs(:execute_single_step).raises 'should not have been called'
+      it "should NOT execute the target" do
+        contract.stubs(:execute_single_target).raises 'should not have been called'
         mass_operation.execute
       end
 
-      it "should note that the missing step has been ignored" do
-        contract.expects(:ignore_single_step).with operation1.target_id
+      it "should note that the missing target has been ignored" do
+        contract.expects(:ignore_single_target).with operation1.target_id
         mass_operation.execute
       end
 
@@ -161,8 +161,8 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation
-        contract.stubs :execute_single_step
-        contract.stubs :ignore_single_step
+        contract.stubs :execute_single_target
+        contract.stubs :ignore_single_target
       end
 
       it "should note that work is to be executed" do
@@ -170,13 +170,13 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
-      it "should execute the found step" do
-        contract.expects(:execute_single_step).with operation1.target_id
+      it "should execute the found target" do
+        contract.expects(:execute_single_target).with operation1.target_id
         mass_operation.execute
       end
 
-      it "should ignore the step that cannot be found" do
-        contract.expects(:ignore_single_step).with operation2.target_id
+      it "should ignore the target that cannot be found" do
+        contract.expects(:ignore_single_target).with operation2.target_id
         mass_operation.execute
       end
 
@@ -192,14 +192,14 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
         considered = mass_operation
                        .considered
-                       .select { |x| x['task'] == 'execute_single_step' }
+                       .select { |x| x['task'] == 'execute_single_target' }
                        .map    { |x| x['target_id'] }
         considered.count.must_equal 1
         considered.include? operation1.target_id
 
         considered = mass_operation
                        .considered
-                       .select { |x| x['task'] == 'ignore_single_step' }
+                       .select { |x| x['task'] == 'ignore_single_target' }
                        .map    { |x| x['target_id'] }
         considered.count.must_equal 1
         considered.include? operation2.target_id
