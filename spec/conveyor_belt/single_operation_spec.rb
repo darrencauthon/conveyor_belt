@@ -6,36 +6,6 @@ describe ConveyorBelt::SingleOperation do
   let(:contract)  { TestContract.new }
   let(:target_id) { random_string }
 
-  describe "determining if the target can be found" do
-
-    describe "and the target exists" do
-
-      let(:target) { Object.new } 
-
-      before do
-        contract.stubs(:find).with(target_id).returns target
-      end
-
-      it "should return true" do
-        operation.found?.must_equal true
-      end
-
-    end
-
-    describe "and the target does not exist" do
-
-      before do
-        contract.stubs(:find).with(target_id).returns nil
-      end
-
-      it "should return true" do
-        operation.found?.must_equal false
-      end
-
-    end
-
-  end
-
   describe "getting the target" do
 
     let(:target) { Object.new }
@@ -54,5 +24,32 @@ describe ConveyorBelt::SingleOperation do
     end
 
   end
+
+  describe "determining if the target can be found" do
+
+    describe "and the target exists" do
+
+      let(:target) { Object.new } 
+
+      before { operation.stubs(:target).returns target }
+
+      it "should return true" do
+        operation.found?.must_equal true
+      end
+
+    end
+
+    describe "and the target does not exist" do
+
+      before { operation.stubs(:target).returns nil }
+
+      it "should return true" do
+        operation.found?.must_equal false
+      end
+
+    end
+
+  end
+
 
 end

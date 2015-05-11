@@ -10,7 +10,7 @@ module ConveyorBelt
     end
 
     def found?
-      contract.find(target_id).nil? == false
+      target.nil? == false
     end
 
     def target
