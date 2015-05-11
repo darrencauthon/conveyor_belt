@@ -21,6 +21,10 @@ module ConveyorBelt
       @operations ||= list.map { |x| ConveyorBelt::SingleOperation.new(x, contract: contract) }
     end
 
+    def execute
+      contract.start_mass_operation self
+    end
+
   end
 
 end

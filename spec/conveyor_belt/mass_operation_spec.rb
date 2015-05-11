@@ -68,4 +68,24 @@ describe ConveyorBelt::MassOperation do
 
   end
 
+  describe "execute" do
+
+    let(:mass_operation) { ConveyorBelt::MassOperation.new args }
+
+    let(:args) { { contract: contract, list: list } }
+
+    let(:contract) { Object.new }
+    let(:list)     { [random_string] }
+
+    describe "and there is one operation with a target that can be found" do
+
+      it "should note that work is to be executed" do
+        contract.expects(:start_mass_operation).with mass_operation
+        mass_operation.execute
+      end
+
+    end
+
+  end
+
 end
