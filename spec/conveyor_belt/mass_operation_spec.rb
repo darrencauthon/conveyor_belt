@@ -1,8 +1,5 @@
 require_relative '../spec_helper'
 
-class TestContract < ConveyorBelt::Contract
-end
-
 describe ConveyorBelt::MassOperation do
 
   describe "creating a new operation" do

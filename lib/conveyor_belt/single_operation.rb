@@ -9,6 +9,10 @@ module ConveyorBelt
       @contract = options[:contract]
     end
 
+    def found?
+      contract.find(target).nil? == false
+    end
+
   end
 
 end
