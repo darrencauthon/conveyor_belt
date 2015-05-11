@@ -1,16 +1,32 @@
+require 'json'
+
 module ConveyorBelt
 
   class MassOperation
 
-    attr_reader :contract, :list
+    attr_reader :contract, :list, :id
 
     def initialize args
       @contract = args[:contract]
       @list     = args[:list]
+      @id       = args[:id] || SecureRandom.uuid
     end
 
-    def id
-      @id ||= SecureRandom.uuid
+    def dump
+      {
+        id:         id,
+        contract:   contract.class.to_s,
+        list:       list,
+        considered: considered,
+      }.to_json
+    end
+
+    def self.load data
+      data = JSON.parse data
+      new( { contract: data['contract'],
+             list:     data['list'],
+             id:       data['id'] } )
+
     end
 
     def self.with contract

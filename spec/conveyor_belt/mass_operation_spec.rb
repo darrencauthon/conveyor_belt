@@ -51,6 +51,19 @@ describe ConveyorBelt::MassOperation do
             result.list.must_be_same_as result.list
           end
 
+          describe "dumping and loading" do
+            it "should allow me to deconstruct and reconstruct the mass operation" do
+              data = result.dump
+              data.is_a?(String).must_equal true
+              restored = ConveyorBelt::MassOperation.load data
+              restored.is_a? ConveyorBelt::MassOperation
+              restored.id.must_equal result.id
+
+              restored.list.must_equal result.list
+              restored.considered.must_equal result.considered
+            end
+          end
+
           describe "operations" do
 
             it "should have a list of single operations" do
