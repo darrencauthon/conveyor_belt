@@ -79,8 +79,30 @@ describe ConveyorBelt::MassOperation do
 
     describe "and there is one operation with a target that can be found" do
 
+      let(:operation1) { Struct.new(:target_id, :target_found?).new(random_string, true) }
+
+      let(:operations) { [operation1] }
+
+      before do
+        mass_operation.stubs(:operations).returns operations
+        contract.stubs :start_mass_operation
+        contract.stubs :execute_single_step
+      end
+
       it "should note that work is to be executed" do
         contract.expects(:start_mass_operation).with mass_operation
+        mass_operation.execute
+      end
+
+      it "should exeucte the single step" do
+        contract.expects(:execute_single_step).with operation1.target_id
+        mass_operation.execute
+      end
+
+      it "should exeucte the single step AFTER the operation has started" do
+        contract.stubs(:execute_single_step).with do |_|
+          contract.stubs(:start_mass_operation).raises 'called in the wrong order'
+        end
         mass_operation.execute
       end
 

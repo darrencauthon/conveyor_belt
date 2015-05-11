@@ -23,6 +23,7 @@ module ConveyorBelt
 
     def execute
       contract.start_mass_operation self
+      contract.execute_single_step operations.first.target_id
     end
 
   end
