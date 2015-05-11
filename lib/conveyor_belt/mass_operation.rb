@@ -18,7 +18,7 @@ module ConveyorBelt
     end
 
     def operations
-      list.map { |x| ConveyorBelt::SingleOperation.new(x, contract: contract) }
+      @operations ||= list.map { |x| ConveyorBelt::SingleOperation.new(x, contract: contract) }
     end
 
   end

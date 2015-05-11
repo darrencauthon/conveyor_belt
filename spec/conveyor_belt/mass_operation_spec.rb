@@ -33,6 +33,10 @@ describe ConveyorBelt::MassOperation do
             result.list.must_equal list
           end
 
+          it "should return the same list each time" do
+            result.list.must_be_same_as result.list
+          end
+
           describe "operations" do
 
             it "should have a list of single operations" do
