@@ -182,9 +182,26 @@ describe ConveyorBelt::MassOperation do
 
       it "should not which targets had been considered" do
         mass_operation.execute
-        considered = mass_operation.considered.map { |x| x[:target_id] }
+        considered = mass_operation.considered.map { |x| x['target_id'] }
         considered.count.must_equal 2
         considered.include? operation1.target_id
+        considered.include? operation2.target_id
+      end
+
+      it "should track which task each one went through" do
+        mass_operation.execute
+        considered = mass_operation
+                       .considered
+                       .select { |x| x['task'] == 'execute_single_step' }
+                       .map    { |x| x['target_id'] }
+        considered.count.must_equal 1
+        considered.include? operation1.target_id
+
+        considered = mass_operation
+                       .considered
+                       .select { |x| x['task'] == 'ignore_single_step' }
+                       .map    { |x| x['target_id'] }
+        considered.count.must_equal 1
         considered.include? operation2.target_id
       end
 
