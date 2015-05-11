@@ -169,6 +169,24 @@ describe ConveyorBelt::MassOperation do
 
     end
 
+    describe "and there are two operations, both of which have been considered" do
+
+      let(:operation1) { Struct.new(:target_id, :target_found?).new(random_string, true) }
+      let(:operation2) { Struct.new(:target_id, :target_found?).new(random_string, false) }
+
+      let(:operations) { [operation1, operation2] }
+
+      before do
+        mass_operation.stubs(:operations).returns operations
+        mass_operation.stubs(:considered).returns [operation1.target_id, operation2.target_id]
+      end
+
+      it "do nothing with the contract" do
+        mass_operation.execute
+      end
+
+    end
+
   end
 
 end

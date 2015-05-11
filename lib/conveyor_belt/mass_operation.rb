@@ -17,11 +17,16 @@ module ConveyorBelt
       end
     end
 
+    def considered
+      []
+    end
+
     def operations
       @operations ||= list.map { |x| ConveyorBelt::SingleOperation.new(x, contract: contract) }
     end
 
     def execute
+      return if considered.count > 0
       contract.start_mass_operation self
       tasks_to_execute.each { |t| contract.send t[:task], t[:target_id] }
     end
