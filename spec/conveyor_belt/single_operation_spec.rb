@@ -36,4 +36,23 @@ describe ConveyorBelt::SingleOperation do
 
   end
 
+  describe "getting the target" do
+
+    let(:target) { Object.new }
+
+    before { contract.stubs(:find).with(target_id).returns target }
+
+    it "should return the target returned from the contract" do
+      operation.target.must_be_same_as target
+    end
+
+    it "should return the same operation each time" do
+      contract.stubs(:find).with do |id|
+        contract.stubs(:find).raises 'only once please'
+      end.returns target
+      operation.target.must_be_same_as operation.target
+    end
+
+  end
+
 end

@@ -13,6 +13,10 @@ module ConveyorBelt
       contract.find(target_id).nil? == false
     end
 
+    def target
+      @target ||= contract.find target_id
+    end
+
   end
 
 end
