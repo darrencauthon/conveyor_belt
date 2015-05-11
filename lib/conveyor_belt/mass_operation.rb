@@ -24,7 +24,7 @@ module ConveyorBelt
     def execute
       contract.start_mass_operation self
       tasks = operations.map do |operation|
-                task = (operation.target_found? ? :execute_single_step : :ignore_single_step)
+                task = operation.target_found? ? :execute_single_step : :ignore_single_step
                 {
                   task:      task,
                   target_id: operation.target_id,
