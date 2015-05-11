@@ -9,6 +9,10 @@ module ConveyorBelt
       @list     = args[:list]
     end
 
+    def id
+      @id ||= SecureRandom.uuid
+    end
+
     def self.with contract
       Struct.new(:contract).new(contract).tap do |setup|
         def setup.for list

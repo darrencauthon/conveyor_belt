@@ -2,6 +2,23 @@ require_relative '../spec_helper'
 
 describe ConveyorBelt::MassOperation do
 
+  describe "id" do
+
+    let(:mass_operation) do
+      ConveyorBelt::MassOperation.new({})
+    end
+
+    it "should get a unique id" do
+      mass_operation.id.nil?.must_equal false
+      mass_operation.id.wont_equal ''
+    end
+
+    it "should be the same id each time I ask for it" do
+      mass_operation.id.must_equal mass_operation.id
+    end
+
+  end
+
   describe "creating a new operation" do
 
     describe "with a contract" do
