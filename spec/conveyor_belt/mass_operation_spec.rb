@@ -15,20 +15,24 @@ describe ConveyorBelt::MassOperation do
 
         let(:list) { ['1', '2', '3'] }
 
-        let(:result) do
-          ConveyorBelt::MassOperation.with(contract).for(list)
-        end
+        describe "building the operation" do
 
-        it "should build the operation" do
-          result.is_a?(ConveyorBelt::MassOperation).must_equal true
-        end
+          let(:result) do
+            ConveyorBelt::MassOperation.with(contract).for(list)
+          end
 
-        it "should have the original contract" do
-          result.contract.must_be_same_as contract
-        end
+          it "should build the operation" do
+            result.is_a?(ConveyorBelt::MassOperation).must_equal true
+          end
 
-        it "should have the original list" do
-          result.list.must_equal list
+          it "should have the original contract" do
+            result.contract.must_be_same_as contract
+          end
+
+          it "should have the original list" do
+            result.list.must_equal list
+          end
+
         end
 
       end
