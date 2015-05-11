@@ -2,18 +2,18 @@ require_relative '../spec_helper'
 
 describe ConveyorBelt::SingleOperation do
 
-  let(:operation) { ConveyorBelt::SingleOperation.new(target, contract: contract) }
+  let(:operation) { ConveyorBelt::SingleOperation.new(target_id, contract: contract) }
   let(:contract)  { TestContract.new }
-  let(:target)    { random_string }
+  let(:target_id) { random_string }
 
   describe "determining if the target can be found" do
 
     describe "and the target exists" do
 
-      let(:actual_target) { Object.new } 
+      let(:target) { Object.new } 
 
       before do
-        contract.stubs(:find).with(target).returns actual_target
+        contract.stubs(:find).with(target_id).returns target
       end
 
       it "should return true" do
@@ -25,7 +25,7 @@ describe ConveyorBelt::SingleOperation do
     describe "and the target does not exist" do
 
       before do
-        contract.stubs(:find).with(target).returns nil
+        contract.stubs(:find).with(target_id).returns nil
       end
 
       it "should return true" do

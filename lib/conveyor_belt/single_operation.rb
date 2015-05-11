@@ -2,15 +2,15 @@ module ConveyorBelt
 
   class SingleOperation
 
-    attr_reader :target, :contract
+    attr_reader :target_id, :contract
 
-    def initialize target, options = {}
-      @target   = target
-      @contract = options[:contract]
+    def initialize target_id, options = {}
+      @target_id = target_id
+      @contract  = options[:contract]
     end
 
     def found?
-      contract.find(target).nil? == false
+      contract.find(target_id).nil? == false
     end
 
   end

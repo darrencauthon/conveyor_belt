@@ -46,7 +46,7 @@ describe ConveyorBelt::MassOperation do
             end
 
             it "should pass the target id of each operation" do
-              ids = result.operations.map { |x| x.target }
+              ids = result.operations.map { |x| x.target_id }
               ids.include?('1').must_equal true
               ids.include?('2').must_equal true
               ids.include?('3').must_equal true
