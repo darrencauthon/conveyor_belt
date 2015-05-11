@@ -24,11 +24,9 @@ module ConveyorBelt
     def execute
       contract.start_mass_operation self
       operations.each do |operation|
-        if operation.target_found?
-          contract.execute_single_step operation.target_id
-        else
-          contract.ignore_single_step operation.target_id
-        end
+        task = operation.target_found? ? :execute_single_step
+                                       : :ignore_single_step
+        contract.send(task, operation.target_id)
       end
     end
 
