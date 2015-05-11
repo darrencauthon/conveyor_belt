@@ -85,12 +85,12 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation
+        contract.stubs :start_mass_operation_definition
         contract.stubs :execute_single_target
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation).with mass_operation
+        contract.expects(:start_mass_operation_definition).with mass_operation
         mass_operation.execute
       end
 
@@ -101,7 +101,7 @@ describe ConveyorBelt::MassOperation do
 
       it "should exeucte the single target AFTER the operation has started" do
         contract.stubs(:execute_single_target).with do |_|
-          contract.stubs(:start_mass_operation).raises 'called in the wrong order'
+          contract.stubs(:start_mass_operation_definition).raises 'called in the wrong order'
         end
         mass_operation.execute
       end
@@ -116,13 +116,13 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation
+        contract.stubs :start_mass_operation_definition
         contract.stubs :execute_single_target
         contract.stubs :ignore_single_target
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation).with mass_operation
+        contract.expects(:start_mass_operation_definition).with mass_operation
         mass_operation.execute
       end
 
@@ -160,13 +160,13 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation
+        contract.stubs :start_mass_operation_definition
         contract.stubs :execute_single_target
         contract.stubs :ignore_single_target
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation).with mass_operation
+        contract.expects(:start_mass_operation_definition).with mass_operation
         mass_operation.execute
       end
 

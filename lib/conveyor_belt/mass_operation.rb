@@ -27,7 +27,7 @@ module ConveyorBelt
 
     def execute
       raise 'This mass operation has already started.' if considered.count > 0
-      contract.start_mass_operation self
+      contract.start_mass_operation_definition self
       @considered = []
       tasks_to_execute.each do |t|
         contract.send t[:task], t[:target_id]
