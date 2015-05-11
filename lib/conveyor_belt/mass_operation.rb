@@ -23,14 +23,19 @@ module ConveyorBelt
 
     def execute
       contract.start_mass_operation self
-      tasks = operations.map do |operation|
-                task = operation.target_found? ? :execute_single_step : :ignore_single_step
-                {
-                  task:      task,
-                  target_id: operation.target_id,
-                }
-              end
-      tasks.each { |t| contract.send t[:task], t[:target_id] }
+      tasks_to_execute.each { |t| contract.send t[:task], t[:target_id] }
+    end
+
+    private
+
+    def tasks_to_execute
+      operations.map do |operation|
+        task = operation.target_found? ? :execute_single_step : :ignore_single_step
+        {
+          task:      task,
+          target_id: operation.target_id,
+        }
+      end
     end
 
   end
