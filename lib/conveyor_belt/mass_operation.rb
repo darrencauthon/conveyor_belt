@@ -33,6 +33,7 @@ module ConveyorBelt
         contract.send t[:task], t[:target_id]
         @considered << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
       end
+      contract.stop_mass_operation_definition self
     end
 
     private

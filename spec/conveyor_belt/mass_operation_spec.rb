@@ -86,6 +86,7 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
+        contract.stubs :stop_mass_operation_definition
         contract.stubs :execute_single_target
       end
 
@@ -106,6 +107,20 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
+      it "should stop the mass operation definition" do
+        contract.expects(:stop_mass_operation_definition).with mass_operation
+        mass_operation.execute
+      end
+
+      it "should note when the mass operation definition is over" do
+        contract.stubs(:stop_mass_operation_definition).raises 'called in the wrong order'
+        contract.stubs(:execute_single_target).with do |_|
+          contract.stubs :stop_mass_operation_definition
+          true
+        end
+        mass_operation.execute
+      end
+
     end
 
     describe "and there is one operation with a target that CANNOT be found" do
@@ -117,6 +132,7 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
+        contract.stubs :stop_mass_operation_definition
         contract.stubs :execute_single_target
         contract.stubs :ignore_single_target
       end
@@ -161,6 +177,7 @@ describe ConveyorBelt::MassOperation do
       before do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
+        contract.stubs :stop_mass_operation_definition
         contract.stubs :execute_single_target
         contract.stubs :ignore_single_target
       end
