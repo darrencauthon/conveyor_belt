@@ -68,6 +68,11 @@ describe ConveyorBelt::MassOperation do
               restored = ConveyorBelt::MassOperation.load result.dump
               restored.contract.is_a?(TestContract).must_equal true
             end
+
+            it "should retain the mass operation through the contract" do
+              restored = ConveyorBelt::MassOperation.load result.dump
+              restored.contract.mass_operation.id.must_equal result.id
+            end
           end
 
           describe "operations" do
@@ -110,7 +115,7 @@ describe ConveyorBelt::MassOperation do
 
     let(:args) { { contract: contract, list: list } }
 
-    let(:contract) { Object.new }
+    let(:contract) { TestContract.new }
     let(:list)     { [random_string] }
 
     describe "and there is one operation with a target that can be found" do

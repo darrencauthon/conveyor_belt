@@ -44,7 +44,7 @@ module ConveyorBelt
              id:         data['id'],
              considered: data['considered'],
              ignored_ids: data['ignored_ids'],
-             succeeded_ids: data['succeeded_ids']} )
+             succeeded_ids: data['succeeded_ids']} ).tap { |x| x.contract.start_mass_operation_definition x }
     end
 
     def self.with contract
