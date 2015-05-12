@@ -61,8 +61,13 @@ module ConveyorBelt
           self
         end
 
+        def setup.with data
+          @data = data
+          self
+        end
+
         def setup.new
-          MassOperation.new(contract: contract, list: (@list || []))
+          MassOperation.new(contract: contract, list: (@list || []), data: (@data || {}))
         end
       end
     end

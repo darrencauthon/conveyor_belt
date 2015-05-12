@@ -51,6 +51,25 @@ describe ConveyorBelt::MassOperation do
             result.list.must_be_same_as result.list
           end
 
+          describe "with more data" do
+            let(:the_key)   { random_string }
+            let(:the_value) { random_string }
+            let(:the_data)  { { the_key => the_value } }
+
+            let(:result) do
+              ConveyorBelt::MassOperation
+                .using(contract)
+                .with(the_data)
+                .for(list)
+                .new
+            end
+
+            it "should set the data on the mass operation" do
+              result.data[the_key].must_equal the_value
+            end
+
+          end
+
           describe "dumping and loading" do
             it "should allow me to deconstruct and reconstruct the mass operation" do
               data = result.dump
