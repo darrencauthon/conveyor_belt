@@ -145,26 +145,11 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
-      end
-
-      it "should note that work is to be executed" do
-        contract.expects(:tie_to_mass_operation).with mass_operation
-        mass_operation.execute
       end
 
       it "should stop the mass operation definition" do
         contract.expects(:stop_mass_operation_definition).with mass_operation
-        mass_operation.execute
-      end
-
-      it "should note when the mass operation definition is over" do
-        contract.stubs(:stop_mass_operation_definition).raises 'called in the wrong order'
-        contract.stubs(:tie_to_mass_operation).with do |_|
-          contract.stubs :stop_mass_operation_definition
-          true
-        end
         mass_operation.execute
       end
 
@@ -178,13 +163,7 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
-      end
-
-      it "should note that work is to be executed" do
-        contract.expects(:tie_to_mass_operation).with mass_operation
-        mass_operation.execute
       end
 
     end
@@ -198,13 +177,7 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
-      end
-
-      it "should note that work is to be executed" do
-        contract.expects(:tie_to_mass_operation).with mass_operation
-        mass_operation.execute
       end
 
       it "should not which targets had been examined_list" do
