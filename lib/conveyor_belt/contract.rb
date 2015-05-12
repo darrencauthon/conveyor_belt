@@ -48,6 +48,10 @@ module ConveyorBelt
       mass_operation.ignored! target_id
     end
 
+    def perform target
+      raise "You must implement perform(target) on #{self.class}"
+    end
+
   end
 
 end

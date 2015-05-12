@@ -138,4 +138,18 @@ describe ConveyorBelt::Contract do
     end
   end
 
+  describe "perform" do
+    let(:contract) { TestContract.new }
+    it "should raise a not implemented error" do
+      target = Object.new
+      message = begin
+                  contract.perform target
+                  nil
+                rescue StandardError => error
+                  error.message
+                end
+      message.must_equal 'You must implement perform(target) on TestContract'
+    end
+  end
+
 end
