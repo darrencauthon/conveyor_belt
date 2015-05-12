@@ -13,7 +13,7 @@ module ConveyorBelt
       @contract = args[:contract].present? && args[:contract].is_a?(String) ? args[:contract].constantize.new : args[:contract]
       @list     = args[:list] || []
       @id       = args[:id] || SecureRandom.uuid
-      @considered = args[:considered]
+      @examined_list = args[:examined_list]
       @ignored_ids = args[:ignored_ids] || []
       @succeeded_ids = args[:succeeded_ids] || []
       @data = HashWithIndifferentAccess.new(args[:data] || {})
@@ -23,14 +23,14 @@ module ConveyorBelt
       @data
     end
 
-    def considered
-      return @considered if @considered
-      @considered = []
+    def examined_list
+      return @examined_list if @examined_list
+      @examined_list = []
       tasks_to_execute.each do |t|
         contract.send t[:task], t[:target_id]
-        @considered << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
+        @examined_list << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
       end
-      @considered
+      @examined_list
     end
 
     def dump
@@ -38,7 +38,7 @@ module ConveyorBelt
         id:         id,
         contract:   contract.class.to_s,
         list:       list,
-        considered: considered,
+        examined_list: examined_list,
         ignored_ids: ignored_ids,
         succeeded_ids: succeeded_ids,
         data: data,
@@ -58,7 +58,7 @@ module ConveyorBelt
       new( { contract:   data['contract'],
              list:       data['list'],
              id:         data['id'],
-             considered: data['considered'],
+             examined_list: data['examined_list'],
              data: data['data'],
              ignored_ids: data['ignored_ids'],
              succeeded_ids: data['succeeded_ids']} ).tap { |x| x.contract.start_mass_operation_definition x }
@@ -88,7 +88,7 @@ module ConveyorBelt
 
     def execute
       contract.start_mass_operation_definition self
-      considered
+      examined_list
       contract.stop_mass_operation_definition self
     end
 

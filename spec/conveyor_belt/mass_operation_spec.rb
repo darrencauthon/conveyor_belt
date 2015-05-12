@@ -79,7 +79,7 @@ describe ConveyorBelt::MassOperation do
               restored.id.must_equal result.id
 
               restored.list.must_equal result.list
-              restored.considered.must_equal result.considered
+              restored.examined_list.must_equal result.examined_list
             end
 
             it "should retain the actual contract used" do
@@ -244,29 +244,29 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
-      it "should not which targets had been considered" do
+      it "should not which targets had been examined_list" do
         mass_operation.execute
-        considered = mass_operation.considered.map { |x| x['target_id'] }
-        considered.count.must_equal 2
-        considered.include? operation1.target_id
-        considered.include? operation2.target_id
+        examined_list = mass_operation.examined_list.map { |x| x['target_id'] }
+        examined_list.count.must_equal 2
+        examined_list.include? operation1.target_id
+        examined_list.include? operation2.target_id
       end
 
       it "should track which task each one went through" do
         mass_operation.execute
-        considered = mass_operation
-                       .considered
+        examined_list = mass_operation
+                       .examined_list
                        .select { |x| x['task'] == 'mark_for_execution' }
                        .map    { |x| x['target_id'] }
-        considered.count.must_equal 1
-        considered.include? operation1.target_id
+        examined_list.count.must_equal 1
+        examined_list.include? operation1.target_id
 
-        considered = mass_operation
-                       .considered
+        examined_list = mass_operation
+                       .examined_list
                        .select { |x| x['task'] == 'mark_for_ignoring' }
                        .map    { |x| x['target_id'] }
-        considered.count.must_equal 1
-        considered.include? operation2.target_id
+        examined_list.count.must_equal 1
+        examined_list.include? operation2.target_id
       end
 
       describe "dumping and loading" do
@@ -275,7 +275,7 @@ describe ConveyorBelt::MassOperation do
 
           data = mass_operation.dump
           restored = ConveyorBelt::MassOperation.load data
-          restored.considered.must_equal mass_operation.considered
+          restored.examined_list.must_equal mass_operation.examined_list
         end
       end
 
