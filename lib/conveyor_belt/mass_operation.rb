@@ -87,7 +87,7 @@ module ConveyorBelt
     end
 
     def execute
-      contract.stop_mass_operation_definition self
+      contract.kick_off_all_pending_operations self
     end
 
     private

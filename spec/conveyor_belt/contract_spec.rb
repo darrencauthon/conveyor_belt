@@ -49,7 +49,7 @@ describe ConveyorBelt::Contract do
 
   end
 
-  describe "stop the mass operation definition" do
+  describe "kicking off all pending operations" do
 
     let(:mass_operation) do
       Struct.new(:operations, :examined_list).new operations, examined_list
@@ -84,7 +84,7 @@ describe ConveyorBelt::Contract do
         operations[0].stubs(:execute).raises 'error'
         operations[3].stubs(:execute).raises 'error'
 
-        contract.stop_mass_operation_definition mass_operation
+        contract.kick_off_all_pending_operations mass_operation
       end
 
       it "should find the operations to ignore, and ignore them" do
@@ -94,7 +94,7 @@ describe ConveyorBelt::Contract do
         operations[1].stubs(:ignore).raises 'error'
         operations[2].stubs(:ignore).raises 'error'
 
-        contract.stop_mass_operation_definition mass_operation
+        contract.kick_off_all_pending_operations mass_operation
       end
 
     end

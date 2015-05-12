@@ -16,7 +16,7 @@ module ConveyorBelt
       @mass_operation = mass_operation
     end
 
-    def stop_mass_operation_definition mass_operation
+    def kick_off_all_pending_operations mass_operation
       mass_operation.examined_list.select { |x| x['task'].to_s == 'mark_for_execution' }
       .map { |x| x['target_id'] }
         .each do |target_id|

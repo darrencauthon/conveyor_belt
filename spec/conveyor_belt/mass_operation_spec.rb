@@ -145,11 +145,11 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :stop_mass_operation_definition
+        contract.stubs :kick_off_all_pending_operations
       end
 
-      it "should stop the mass operation definition" do
-        contract.expects(:stop_mass_operation_definition).with mass_operation
+      it "should kick off all pending operations" do
+        contract.expects(:kick_off_all_pending_operations).with mass_operation
         mass_operation.execute
       end
 
@@ -163,7 +163,7 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :stop_mass_operation_definition
+        contract.stubs :kick_off_all_pending_operations
       end
 
     end
@@ -177,7 +177,7 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :stop_mass_operation_definition
+        contract.stubs :kick_off_all_pending_operations
       end
 
       it "should not which targets had been examined_list" do
