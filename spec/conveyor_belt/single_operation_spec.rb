@@ -23,6 +23,11 @@ describe ConveyorBelt::SingleOperation do
       operation.target.must_be_same_as operation.target
     end
 
+    it "should return nil if a failure occurs during the find call" do
+      contract.stubs(:find).with(target_id).raises 'error'
+      operation.target.nil?.must_equal true
+    end
+
   end
 
   describe "determining if the target can be found" do
