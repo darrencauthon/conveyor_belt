@@ -212,19 +212,6 @@ describe ConveyorBelt::MassOperation do
         mass_operation.execute
       end
 
-      describe "and its is started again" do
-        it "do throw an error that the contract has already been started" do
-          mass_operation.execute
-          message = begin
-                      mass_operation.execute
-                      nil
-                    rescue RuntimeError => ex
-                      ex.message
-                    end
-          message.must_equal 'This mass operation has already started.'
-        end
-      end
-
     end
 
     describe "and there are two operations" do
@@ -290,30 +277,6 @@ describe ConveyorBelt::MassOperation do
           restored = ConveyorBelt::MassOperation.load data
           restored.considered.must_equal mass_operation.considered
         end
-      end
-
-    end
-
-    describe "and there are two operations, both of which have been considered" do
-
-      let(:operation1) { Struct.new(:target_id, :target_found?).new(random_string, true) }
-      let(:operation2) { Struct.new(:target_id, :target_found?).new(random_string, false) }
-
-      let(:operations) { [operation1, operation2] }
-
-      before do
-        mass_operation.stubs(:operations).returns operations
-        mass_operation.stubs(:considered).returns [operation1.target_id, operation2.target_id]
-      end
-
-      it "do throw an error that the contract has already been started" do
-        message = begin
-                    mass_operation.execute
-                    nil
-                  rescue RuntimeError => ex
-                    ex.message
-                  end
-        message.must_equal 'This mass operation has already started.'
       end
 
     end
