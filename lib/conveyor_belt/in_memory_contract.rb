@@ -12,10 +12,10 @@ module ConveyorBelt
       @mass_operation = mass_operation
     end
 
-    def ignore_target _
+    def mark_for_ignoring _
     end
 
-    def execute_target target_id
+    def mark_for_execution target_id
       @target_ids << target_id
     end
 
