@@ -22,6 +22,7 @@ module ConveyorBelt
         contract:   contract.class.to_s,
         list:       list,
         considered: considered,
+        ignored_ids: ignored_ids,
       }.to_json
     end
 
@@ -34,7 +35,8 @@ module ConveyorBelt
       new( { contract:   data['contract'],
              list:       data['list'],
              id:         data['id'],
-             considered: data['considered'] } )
+             considered: data['considered'],
+             ignored_ids: data['ignored_ids'] } )
     end
 
     def self.with contract

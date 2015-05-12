@@ -313,6 +313,17 @@ describe ConveyorBelt::MassOperation do
       mass_operation.ignored_ids[0].must_be_same_as target_id
     end
 
+    describe "dumping and loading" do
+      it "should allow me to deconstruct and reconstruct the mass operation" do
+        target_id = random_string
+        mass_operation.ignored! target_id
+
+        restored = ConveyorBelt::MassOperation.load mass_operation.dump
+        restored.ignored_ids.count.must_equal 1
+        restored.ignored_ids[0].must_equal target_id
+      end
+    end
+
   end
 
 end
