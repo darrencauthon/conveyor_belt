@@ -31,6 +31,7 @@ module ConveyorBelt
         considered: considered,
         ignored_ids: ignored_ids,
         succeeded_ids: succeeded_ids,
+        data: data,
       }.to_json
     end
 
@@ -48,6 +49,7 @@ module ConveyorBelt
              list:       data['list'],
              id:         data['id'],
              considered: data['considered'],
+             data: data['data'],
              ignored_ids: data['ignored_ids'],
              succeeded_ids: data['succeeded_ids']} ).tap { |x| x.contract.start_mass_operation_definition x }
     end

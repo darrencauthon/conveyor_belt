@@ -380,7 +380,7 @@ describe ConveyorBelt::MassOperation do
     let(:data)      { { the_key => the_value } }
 
     let(:mass_operation) do
-      ConveyorBelt::MassOperation.new( { data: data } )
+      ConveyorBelt::MassOperation.new( { data: data, contract: TestContract.new } )
     end
 
     it "should default to an empty hash" do
@@ -393,6 +393,14 @@ describe ConveyorBelt::MassOperation do
 
     it "should return an access indifferent hash" do
       mass_operation.data[the_key.to_sym].must_equal the_value
+    end
+
+    describe "dumping and loading" do
+      it "should allow me to deconstruct and reconstruct the data" do
+        data = mass_operation.dump
+        restored = ConveyorBelt::MassOperation.load data
+        restored.data[the_key].must_equal the_value
+      end
     end
 
   end
