@@ -4,6 +4,10 @@ module ConveyorBelt
 
     attr_reader :mass_operation
 
+    def find target_id
+      target_id
+    end
+
     def start_mass_operation_definition mass_operation
       @mass_operation = mass_operation
     end

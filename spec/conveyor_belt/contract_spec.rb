@@ -131,4 +131,11 @@ describe ConveyorBelt::Contract do
     end
   end
 
+  describe "find" do
+    it "should return the target id" do
+      target_id = Object.new
+      contract.find(target_id).must_equal target_id
+    end
+  end
+
 end
