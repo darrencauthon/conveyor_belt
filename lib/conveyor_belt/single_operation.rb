@@ -18,7 +18,7 @@ module ConveyorBelt
     end
 
     def execute
-      contract.execute target
+      contract.execute target_id
     end
 
   end
