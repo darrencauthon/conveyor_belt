@@ -19,12 +19,14 @@ module ConveyorBelt
     def kick_off_all_pending_operations mass_operation
       mass_operation.examined_list.select { |x| x['task'].to_s == 'mark_for_execution' }
       .map { |x| x['target_id'] }
+      .reject { |x| mass_operation.succeeded_ids.include? x }
         .each do |target_id|
         operation = mass_operation.operations.select { |o| o.target_id == target_id }.first
         operation.execute
       end
       mass_operation.examined_list.select { |x| x['task'].to_s == 'mark_for_ignoring' }
       .map { |x| x['target_id'] }
+      .reject { |x| mass_operation.ignored_ids.include? x }
         .each do |target_id|
         operation = mass_operation.operations.select { |o| o.target_id == target_id }.first
         operation.ignore

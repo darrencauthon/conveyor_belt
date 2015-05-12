@@ -52,13 +52,16 @@ describe ConveyorBelt::Contract do
   describe "kicking off all pending operations" do
 
     let(:mass_operation) do
-      Struct.new(:operations, :examined_list).new operations, examined_list
+      Struct.new(:operations, :examined_list, :ignored_ids, :succeeded_ids).new operations, examined_list, ignored_ids, succeeded_ids
     end
 
     describe "and there are two targets to execute, and two to ignore" do
 
-      let(:target_ids_to_execute) { [Object.new, Object.new] }
-      let(:target_ids_to_ignore)  { [Object.new, Object.new] }
+      let(:target_ids_to_execute) { [random_string, random_string] }
+      let(:target_ids_to_ignore)  { [random_string, random_string] }
+
+      let(:succeeded_ids) { [] }
+      let(:ignored_ids)   { [] }
 
       let(:operations) { [Struct.new(:target_id).new(target_ids_to_ignore[0]),
                           Struct.new(:target_id).new(target_ids_to_execute[1]),
@@ -95,6 +98,24 @@ describe ConveyorBelt::Contract do
         operations[2].stubs(:ignore).raises 'error'
 
         contract.kick_off_all_pending_operations mass_operation
+      end
+
+      describe "but one of the steps to execute have already been executed" do
+        let(:succeeded_ids) { [target_ids_to_execute[0]] }
+
+        it "should not execute it again" do
+          operations[2].stubs(:execute).raises 'should not have been called'
+          contract.kick_off_all_pending_operations mass_operation
+        end
+      end
+
+      describe "but one of the steps to ignore have already been ignored" do
+        let(:ignored_ids) { [target_ids_to_ignore[0]] }
+
+        it "should not ignore it again" do
+          operations[0].stubs(:ignore).raises 'should not have been called'
+          contract.kick_off_all_pending_operations mass_operation
+        end
       end
 
     end
