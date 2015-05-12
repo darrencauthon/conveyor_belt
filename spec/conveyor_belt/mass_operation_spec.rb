@@ -326,4 +326,40 @@ describe ConveyorBelt::MassOperation do
 
   end
 
+  describe "succeeded!" do
+
+    let(:mass_operation) do
+      ConveyorBelt::MassOperation.new({})
+    end
+
+    it "should default a new mass operation to an empty list of succeeded ids" do
+      mass_operation.succeeded_ids.count.must_equal 0
+    end
+
+    it "should allow me to pass a list of succeeded ids through the constructor" do
+      succeeded_ids = Object.new
+      mass_operation = ConveyorBelt::MassOperation.new( { succeeded_ids: succeeded_ids } )
+      mass_operation.succeeded_ids.must_be_same_as succeeded_ids
+    end
+
+    it "should let me add to the succeeded list with succeeded!" do
+      target_id = Object.new
+      mass_operation.succeeded! target_id
+      mass_operation.succeeded_ids.count.must_equal 1
+      mass_operation.succeeded_ids[0].must_be_same_as target_id
+    end
+
+    describe "dumping and loading" do
+      it "should allow me to deconstruct and reconstruct the mass operation" do
+        target_id = random_string
+        mass_operation.succeeded! target_id
+
+        restored = ConveyorBelt::MassOperation.load mass_operation.dump
+        restored.succeeded_ids.count.must_equal 1
+        restored.succeeded_ids[0].must_equal target_id
+      end
+    end
+
+  end
+
 end
