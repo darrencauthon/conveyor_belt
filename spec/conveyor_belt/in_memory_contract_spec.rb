@@ -12,7 +12,7 @@ describe ConveyorBelt::InMemoryContract do
 
   describe "ignore single operation" do
     it "should exist" do
-      contract.ignore_single_operation nil
+      contract.ignore_target nil
     end
   end
 

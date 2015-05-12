@@ -3,7 +3,7 @@ module ConveyorBelt
     def start_mass_operation_definition _
     end
 
-    def ignore_single_operation _
+    def ignore_target _
     end
   end
 end
