@@ -57,7 +57,12 @@ module ConveyorBelt
     def self.using contract
       Struct.new(:contract).new(contract).tap do |setup|
         def setup.for list
-          MassOperation.new(contract: contract, list: list)
+          @list = list
+          self
+        end
+
+        def setup.new
+          MassOperation.new(contract: contract, list: (@list || []))
         end
       end
     end

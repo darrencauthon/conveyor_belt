@@ -32,7 +32,7 @@ describe ConveyorBelt::MassOperation do
         describe "building the operation" do
 
           let(:result) do
-            ConveyorBelt::MassOperation.using(contract).for(list)
+            ConveyorBelt::MassOperation.using(contract).for(list).new
           end
 
           it "should build the operation" do
