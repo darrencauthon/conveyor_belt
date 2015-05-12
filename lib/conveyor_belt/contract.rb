@@ -4,6 +4,10 @@ module ConveyorBelt
 
     attr_reader :mass_operation
 
+    def perform target
+      raise "You must implement perform(target) on #{self.class}"
+    end
+
     def find target_id
       target_id
     end
@@ -46,10 +50,6 @@ module ConveyorBelt
 
     def ignore target_id
       mass_operation.ignored! target_id
-    end
-
-    def perform target
-      raise "You must implement perform(target) on #{self.class}"
     end
 
   end
