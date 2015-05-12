@@ -1,8 +1,8 @@
 require_relative '../spec_helper'
 
-describe ConveyorBelt::InMemoryContract do
+describe ConveyorBelt::Contract do
 
-  let(:contract) { ConveyorBelt::InMemoryContract.new }
+  let(:contract) { ConveyorBelt::Contract.new }
 
   describe "start mass operation definition" do
 
