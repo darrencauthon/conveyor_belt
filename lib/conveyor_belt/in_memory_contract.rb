@@ -1,4 +1,5 @@
 module ConveyorBelt
+
   class InMemoryContract < Contract
 
     attr_reader :target_ids
@@ -26,5 +27,7 @@ module ConveyorBelt
         operation.execute
       end
     end
+
   end
+
 end
