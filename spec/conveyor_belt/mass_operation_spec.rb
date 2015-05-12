@@ -62,6 +62,12 @@ describe ConveyorBelt::MassOperation do
               restored.list.must_equal result.list
               restored.considered.must_equal result.considered
             end
+
+            it "should retain the actual contract used" do
+              result.contract.is_a?(TestContract).must_equal true
+              restored = ConveyorBelt::MassOperation.load result.dump
+              restored.contract.is_a?(TestContract).must_equal true
+            end
           end
 
           describe "operations" do
@@ -293,7 +299,7 @@ describe ConveyorBelt::MassOperation do
   describe "ignored!" do
 
     let(:mass_operation) do
-      ConveyorBelt::MassOperation.new({})
+      ConveyorBelt::MassOperation.new( { contract: TestContract.new } )
     end
 
     it "should default a new mass operation to an empty list of ignored ids" do
@@ -302,7 +308,7 @@ describe ConveyorBelt::MassOperation do
 
     it "should allow me to pass a list of ignored ids through the constructor" do
       ignored_ids = Object.new
-      mass_operation = ConveyorBelt::MassOperation.new( { ignored_ids: ignored_ids } )
+      mass_operation = ConveyorBelt::MassOperation.new( { contract: TestContract.new, ignored_ids: ignored_ids } )
       mass_operation.ignored_ids.must_be_same_as ignored_ids
     end
 
@@ -329,7 +335,7 @@ describe ConveyorBelt::MassOperation do
   describe "succeeded!" do
 
     let(:mass_operation) do
-      ConveyorBelt::MassOperation.new({})
+      ConveyorBelt::MassOperation.new( { contract: TestContract.new } )
     end
 
     it "should default a new mass operation to an empty list of succeeded ids" do

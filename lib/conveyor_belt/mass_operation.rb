@@ -10,7 +10,7 @@ module ConveyorBelt
     attr_reader :succeeded_ids
 
     def initialize args
-      @contract = args[:contract]
+      @contract = args[:contract].present? && args[:contract].is_a?(String) ? args[:contract].constantize.new : args[:contract]
       @list     = args[:list]
       @id       = args[:id] || SecureRandom.uuid
       @considered = args[:considered] || []
