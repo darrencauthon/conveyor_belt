@@ -87,7 +87,6 @@ module ConveyorBelt
 
     def execute
       contract.start_mass_operation_definition self
-      examined_list
       contract.stop_mass_operation_definition self
     end
 
