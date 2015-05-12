@@ -5,9 +5,14 @@ describe ConveyorBelt::InMemoryContract do
   let(:contract) { ConveyorBelt::InMemoryContract.new }
 
   describe "start mass operation definition" do
-    it "should exist" do
-      contract.start_mass_operation_definition nil
+
+    let(:mass_operation) { Object.new }
+
+    it "should store the mass operation" do
+      contract.start_mass_operation_definition mass_operation
+      contract.mass_operation.must_be_same_as mass_operation
     end
+
   end
 
   describe "ignore single operation" do
