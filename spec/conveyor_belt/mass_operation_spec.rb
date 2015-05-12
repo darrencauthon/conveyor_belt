@@ -145,12 +145,12 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation_definition
+        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation_definition).with mass_operation
+        contract.expects(:tie_to_mass_operation).with mass_operation
         mass_operation.execute
       end
 
@@ -161,7 +161,7 @@ describe ConveyorBelt::MassOperation do
 
       it "should note when the mass operation definition is over" do
         contract.stubs(:stop_mass_operation_definition).raises 'called in the wrong order'
-        contract.stubs(:start_mass_operation_definition).with do |_|
+        contract.stubs(:tie_to_mass_operation).with do |_|
           contract.stubs :stop_mass_operation_definition
           true
         end
@@ -178,12 +178,12 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation_definition
+        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation_definition).with mass_operation
+        contract.expects(:tie_to_mass_operation).with mass_operation
         mass_operation.execute
       end
 
@@ -198,12 +198,12 @@ describe ConveyorBelt::MassOperation do
 
       before do
         mass_operation.stubs(:operations).returns operations
-        contract.stubs :start_mass_operation_definition
+        contract.stubs :tie_to_mass_operation
         contract.stubs :stop_mass_operation_definition
       end
 
       it "should note that work is to be executed" do
-        contract.expects(:start_mass_operation_definition).with mass_operation
+        contract.expects(:tie_to_mass_operation).with mass_operation
         mass_operation.execute
       end
 

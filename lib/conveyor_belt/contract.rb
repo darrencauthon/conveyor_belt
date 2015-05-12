@@ -12,7 +12,7 @@ module ConveyorBelt
       target_id
     end
 
-    def start_mass_operation_definition mass_operation
+    def tie_to_mass_operation mass_operation
       @mass_operation = mass_operation
     end
 

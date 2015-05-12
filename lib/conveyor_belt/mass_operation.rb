@@ -60,7 +60,7 @@ module ConveyorBelt
              examined_list: data['examined_list'],
              data: data['data'],
              ignored_ids: data['ignored_ids'],
-             succeeded_ids: data['succeeded_ids']} ).tap { |x| x.contract.start_mass_operation_definition x }
+             succeeded_ids: data['succeeded_ids']} ).tap { |m| m.contract.tie_to_mass_operation m }
     end
 
     def self.using contract
@@ -86,7 +86,7 @@ module ConveyorBelt
     end
 
     def execute
-      contract.start_mass_operation_definition self
+      contract.tie_to_mass_operation self
       contract.stop_mass_operation_definition self
     end
 

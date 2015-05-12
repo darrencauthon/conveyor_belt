@@ -9,7 +9,7 @@ describe ConveyorBelt::Contract do
     let(:mass_operation) { Object.new }
 
     it "should store the mass operation" do
-      contract.start_mass_operation_definition mass_operation
+      contract.tie_to_mass_operation mass_operation
       contract.mass_operation.must_be_same_as mass_operation
     end
 
