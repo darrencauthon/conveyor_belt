@@ -36,6 +36,7 @@ module ConveyorBelt
 
     def execute target_id
       perform find(target_id)
+      mass_operation.succeeded! target_id
     end
 
     def ignore target_id

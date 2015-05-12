@@ -28,10 +28,31 @@ describe ConveyorBelt::InMemoryContract do
 
     let(:target_id) { Object.new }
 
-    it "should look up the target, then call perform with it" do
-      target = Object.new
+    let(:target) { Object.new }
+
+    let(:mass_operation) { Object.new }
+
+    before do
+      contract.stubs(:mass_operation).returns mass_operation
       contract.stubs(:find).with(target_id).returns target
+      contract.stubs :perform
+      mass_operation.stubs :succeeded!
+    end
+
+    it "should look up the target, then call perform with it" do
       contract.expects(:perform).with target
+      contract.execute target_id
+    end
+
+    it "should pass the id to the mass operation as a success" do
+      mass_operation.expects(:succeeded!).with target_id
+      contract.execute target_id
+    end
+
+    it "should pass the id to the mass operation, but after the step is performed" do
+      mass_operation.stubs(:succeeded!).with do |target_id|
+        contract.stubs(:perform).raises 'called too early'
+      end
       contract.execute target_id
     end
 
