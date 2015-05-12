@@ -16,8 +16,11 @@ describe ConveyorBelt::InMemoryContract do
   end
 
   describe "ignore single operation" do
-    it "should exist" do
-      contract.mark_for_ignoring nil
+    it "should track the ids to ignore" do
+      target_id = Object.new
+      contract.mark_for_ignoring target_id
+      contract.target_ids_to_ignore.count.must_equal 1
+      contract.target_ids_to_ignore[0].must_equal target_id
     end
   end
 
