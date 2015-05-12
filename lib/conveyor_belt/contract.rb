@@ -52,6 +52,10 @@ module ConveyorBelt
       mass_operation.ignored! target_id
     end
 
+    def data
+      mass_operation.data
+    end
+
   end
 
 end

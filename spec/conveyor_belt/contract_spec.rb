@@ -152,4 +152,16 @@ describe ConveyorBelt::Contract do
     end
   end
 
+  describe "data" do
+
+    it "should return the mass_operation data" do
+      data = Object.new
+      mass_operation = Struct.new(:data).new data
+      contract.stubs(:mass_operation).returns mass_operation
+
+      contract.data.must_be_same_as data
+    end
+
+  end
+
 end
