@@ -52,22 +52,42 @@ describe ConveyorBelt::InMemoryContract do
       Struct.new(:operations).new operations
     end
 
-    describe "and there are two targets to execute" do
+    describe "and there are two targets to execute, and two to ignore" do
 
       let(:target_ids_to_execute) { [Object.new, Object.new] }
+      let(:target_ids_to_ignore)  { [Object.new, Object.new] }
 
-      let(:operations) { [Struct.new(:target_id).new(Object.new),
+      let(:operations) { [Struct.new(:target_id).new(target_ids_to_ignore[0]),
                           Struct.new(:target_id).new(target_ids_to_execute[1]),
                           Struct.new(:target_id).new(target_ids_to_execute[0]),
-                          Struct.new(:target_id).new(Object.new)] }
+                          Struct.new(:target_id).new(target_ids_to_ignore[1])] }
 
       before do
         contract.stubs(:target_ids_to_execute).returns target_ids_to_execute
+        contract.stubs(:target_ids_to_ignore).returns target_ids_to_ignore
+        operations.each do |operation|
+          operation.stubs :execute
+          operation.stubs :ignore
+        end
       end
 
       it "should find the matching operations and execute them" do
         operations[1].expects(:execute)
         operations[2].expects(:execute)
+
+        operations[0].stubs(:execute).raises 'error'
+        operations[3].stubs(:execute).raises 'error'
+
+        contract.stop_mass_operation_definition mass_operation
+      end
+
+      it "should find the operations to ignore, and ignore them" do
+        operations[0].expects(:ignore)
+        operations[3].expects(:ignore)
+
+        operations[1].stubs(:ignore).raises 'error'
+        operations[2].stubs(:ignore).raises 'error'
+
         contract.stop_mass_operation_definition mass_operation
       end
 

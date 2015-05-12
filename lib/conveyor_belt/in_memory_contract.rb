@@ -28,6 +28,10 @@ module ConveyorBelt
         operation = mass_operation.operations.select { |o| o.target_id == target_id }.first
         operation.execute
       end
+      target_ids_to_ignore.each do |target_id|
+        operation = mass_operation.operations.select { |o| o.target_id == target_id }.first
+        operation.ignore
+      end
     end
 
     def execute target_id
