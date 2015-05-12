@@ -21,7 +21,7 @@ describe ConveyorBelt::MassOperation do
 
   describe "creating a new operation" do
 
-    describe "with a contract" do
+    describe "using a contract" do
 
       let(:contract) { TestContract.new }
 
@@ -32,7 +32,7 @@ describe ConveyorBelt::MassOperation do
         describe "building the operation" do
 
           let(:result) do
-            ConveyorBelt::MassOperation.with(contract).for(list)
+            ConveyorBelt::MassOperation.using(contract).for(list)
           end
 
           it "should build the operation" do

@@ -54,7 +54,7 @@ module ConveyorBelt
              succeeded_ids: data['succeeded_ids']} ).tap { |x| x.contract.start_mass_operation_definition x }
     end
 
-    def self.with contract
+    def self.using contract
       Struct.new(:contract).new(contract).tap do |setup|
         def setup.for list
           MassOperation.new(contract: contract, list: list)
