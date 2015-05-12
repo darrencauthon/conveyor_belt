@@ -30,4 +30,33 @@ describe ConveyorBelt::InMemoryContract do
     end
   end
 
+  describe "stop the mass operation definition" do
+
+    let(:mass_operation) do
+      Struct.new(:operations).new operations
+    end
+
+    describe "and there are two targets to execute" do
+
+      let(:target_ids) { [Object.new, Object.new] }
+
+      let(:operations) { [Struct.new(:target_id).new(Object.new),
+                          Struct.new(:target_id).new(target_ids[1]),
+                          Struct.new(:target_id).new(target_ids[0]),
+                          Struct.new(:target_id).new(Object.new)] }
+
+      before do
+        contract.stubs(:target_ids).returns target_ids
+      end
+
+      it "should find the matching operations and execute them" do
+        operations[1].expects(:execute)
+        operations[2].expects(:execute)
+        contract.stop_mass_operation_definition mass_operation
+      end
+
+    end
+
+  end
+
 end
