@@ -95,4 +95,19 @@ describe ConveyorBelt::InMemoryContract do
 
   end
 
+  describe "ignore" do
+
+    let(:mass_operation) { Object.new }
+    let(:target_id)      { Object.new }
+
+    before do
+      contract.stubs(:mass_operation).returns mass_operation
+    end
+
+    it "should pass the id back to the mass operation, add it to the list of ignored targets" do
+      mass_operation.expects(:ignored!).with target_id
+      contract.ignore target_id
+    end
+  end
+
 end

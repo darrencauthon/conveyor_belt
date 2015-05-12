@@ -38,6 +38,10 @@ module ConveyorBelt
       perform find(target_id)
     end
 
+    def ignore target_id
+      mass_operation.ignored! target_id
+    end
+
   end
 
 end
