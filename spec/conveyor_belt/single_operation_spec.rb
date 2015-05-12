@@ -60,4 +60,13 @@ describe ConveyorBelt::SingleOperation do
     end
   end
 
+  describe "ignore" do
+    it "should pass the target id to the contract, but ignore" do
+      target_id = Object.new
+      operation.stubs(:target_id).returns target_id
+      contract.expects(:ignore).with target_id
+      operation.ignore
+    end
+  end
+
 end

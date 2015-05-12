@@ -21,6 +21,10 @@ module ConveyorBelt
       contract.execute target_id
     end
 
+    def ignore
+      contract.ignore target_id
+    end
+
   end
 
 end
