@@ -4,16 +4,16 @@ module ConveyorBelt
 
   class MassOperation
 
-    attr_reader :contract, :list, :id, :considered
+    attr_reader :contract, :list, :id
 
     attr_reader :ignored_ids
     attr_reader :succeeded_ids
 
     def initialize args
       @contract = args[:contract].present? && args[:contract].is_a?(String) ? args[:contract].constantize.new : args[:contract]
-      @list     = args[:list]
+      @list     = args[:list] || []
       @id       = args[:id] || SecureRandom.uuid
-      @considered = args[:considered] || []
+      @considered = args[:considered]
       @ignored_ids = args[:ignored_ids] || []
       @succeeded_ids = args[:succeeded_ids] || []
       @data = HashWithIndifferentAccess.new(args[:data] || {})
@@ -21,6 +21,16 @@ module ConveyorBelt
 
     def data
       @data
+    end
+
+    def considered
+      return @considered if @considered
+      @considered = []
+      tasks_to_execute.each do |t|
+        contract.send t[:task], t[:target_id]
+        @considered << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
+      end
+      @considered
     end
 
     def dump
@@ -78,11 +88,7 @@ module ConveyorBelt
 
     def execute
       contract.start_mass_operation_definition self
-      @considered = []
-      tasks_to_execute.each do |t|
-        contract.send t[:task], t[:target_id]
-        @considered << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
-      end
+      considered
       contract.stop_mass_operation_definition self
     end
 
