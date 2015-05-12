@@ -15,15 +15,6 @@ describe ConveyorBelt::Contract do
 
   end
 
-  describe "ignore single operation" do
-    it "should track the ids to ignore" do
-      target_id = Object.new
-      contract.mark_for_ignoring target_id
-      contract.target_ids_to_ignore.count.must_equal 1
-      contract.target_ids_to_ignore[0].must_equal target_id
-    end
-  end
-
   describe "execute" do
 
     let(:target_id) { Object.new }
@@ -58,19 +49,10 @@ describe ConveyorBelt::Contract do
 
   end
 
-  describe "execute target" do
-    it "should store the target id" do
-      id1, id2 = random_string, random_string
-      contract.mark_for_execution id1
-      contract.mark_for_execution id2
-      contract.target_ids_to_execute.must_equal [id1, id2]
-    end
-  end
-
   describe "stop the mass operation definition" do
 
     let(:mass_operation) do
-      Struct.new(:operations).new operations
+      Struct.new(:operations, :examined_list).new operations, examined_list
     end
 
     describe "and there are two targets to execute, and two to ignore" do
@@ -83,9 +65,12 @@ describe ConveyorBelt::Contract do
                           Struct.new(:target_id).new(target_ids_to_execute[0]),
                           Struct.new(:target_id).new(target_ids_to_ignore[1])] }
 
+      let(:examined_list) do
+        [target_ids_to_execute.map { |x| { 'target_id' => x, 'task' => :mark_for_execution } },
+         target_ids_to_ignore.map  { |x| { 'target_id' => x, 'task' => :mark_for_ignoring } }].flatten
+      end
+
       before do
-        contract.stubs(:target_ids_to_execute).returns target_ids_to_execute
-        contract.stubs(:target_ids_to_ignore).returns target_ids_to_ignore
         operations.each do |operation|
           operation.stubs :execute
           operation.stubs :ignore
