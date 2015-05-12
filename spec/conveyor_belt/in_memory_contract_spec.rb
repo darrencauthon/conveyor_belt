@@ -39,7 +39,7 @@ describe ConveyorBelt::InMemoryContract do
       id1, id2 = random_string, random_string
       contract.mark_for_execution id1
       contract.mark_for_execution id2
-      contract.target_ids.must_equal [id1, id2]
+      contract.target_ids_to_execute.must_equal [id1, id2]
     end
   end
 
@@ -51,15 +51,15 @@ describe ConveyorBelt::InMemoryContract do
 
     describe "and there are two targets to execute" do
 
-      let(:target_ids) { [Object.new, Object.new] }
+      let(:target_ids_to_execute) { [Object.new, Object.new] }
 
       let(:operations) { [Struct.new(:target_id).new(Object.new),
-                          Struct.new(:target_id).new(target_ids[1]),
-                          Struct.new(:target_id).new(target_ids[0]),
+                          Struct.new(:target_id).new(target_ids_to_execute[1]),
+                          Struct.new(:target_id).new(target_ids_to_execute[0]),
                           Struct.new(:target_id).new(Object.new)] }
 
       before do
-        contract.stubs(:target_ids).returns target_ids
+        contract.stubs(:target_ids_to_execute).returns target_ids_to_execute
       end
 
       it "should find the matching operations and execute them" do
