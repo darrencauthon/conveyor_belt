@@ -6,11 +6,14 @@ module ConveyorBelt
 
     attr_reader :contract, :list, :id, :considered
 
+    attr_reader :ignored_ids
+
     def initialize args
       @contract = args[:contract]
       @list     = args[:list]
       @id       = args[:id] || SecureRandom.uuid
       @considered = args[:considered] || []
+      @ignored_ids = args[:ignored_ids] || []
     end
 
     def dump
@@ -20,6 +23,10 @@ module ConveyorBelt
         list:       list,
         considered: considered,
       }.to_json
+    end
+
+    def ignored! target_id
+      @ignored_ids << target_id
     end
 
     def self.load data

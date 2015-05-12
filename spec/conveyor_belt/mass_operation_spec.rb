@@ -290,4 +290,29 @@ describe ConveyorBelt::MassOperation do
 
   end
 
+  describe "ignored!" do
+
+    let(:mass_operation) do
+      ConveyorBelt::MassOperation.new({})
+    end
+
+    it "should default a new mass operation to an empty list of ignored ids" do
+      mass_operation.ignored_ids.count.must_equal 0
+    end
+
+    it "should allow me to pass a list of ignored ids through the constructor" do
+      ignored_ids = Object.new
+      mass_operation = ConveyorBelt::MassOperation.new( { ignored_ids: ignored_ids } )
+      mass_operation.ignored_ids.must_be_same_as ignored_ids
+    end
+
+    it "should let me add to the ignored list with ignored!" do
+      target_id = Object.new
+      mass_operation.ignored! target_id
+      mass_operation.ignored_ids.count.must_equal 1
+      mass_operation.ignored_ids[0].must_be_same_as target_id
+    end
+
+  end
+
 end
