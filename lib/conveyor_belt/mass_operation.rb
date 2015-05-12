@@ -16,6 +16,11 @@ module ConveyorBelt
       @considered = args[:considered] || []
       @ignored_ids = args[:ignored_ids] || []
       @succeeded_ids = args[:succeeded_ids] || []
+      @data = HashWithIndifferentAccess.new(args[:data] || {})
+    end
+
+    def data
+      @data
     end
 
     def dump

@@ -373,4 +373,28 @@ describe ConveyorBelt::MassOperation do
 
   end
 
+  describe "data" do
+
+    let(:the_key)   { random_string }
+    let(:the_value) { random_string }
+    let(:data)      { { the_key => the_value } }
+
+    let(:mass_operation) do
+      ConveyorBelt::MassOperation.new( { data: data } )
+    end
+
+    it "should default to an empty hash" do
+      ConveyorBelt::MassOperation.new({}).data.count.must_equal 0
+    end
+
+    it "should return the data that was passed in" do
+      mass_operation.data[the_key].must_equal the_value
+    end
+
+    it "should return an access indifferent hash" do
+      mass_operation.data[the_key.to_sym].must_equal the_value
+    end
+
+  end
+
 end
