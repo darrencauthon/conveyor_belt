@@ -147,23 +147,10 @@ describe ConveyorBelt::MassOperation do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
         contract.stubs :stop_mass_operation_definition
-        contract.stubs :mark_for_execution
       end
 
       it "should note that work is to be executed" do
         contract.expects(:start_mass_operation_definition).with mass_operation
-        mass_operation.execute
-      end
-
-      it "should exeucte the single target" do
-        contract.expects(:mark_for_execution).with operation1.target_id
-        mass_operation.execute
-      end
-
-      it "should exeucte the single target AFTER the operation has started" do
-        contract.stubs(:mark_for_execution).with do |_|
-          contract.stubs(:start_mass_operation_definition).raises 'called in the wrong order'
-        end
         mass_operation.execute
       end
 
@@ -174,7 +161,7 @@ describe ConveyorBelt::MassOperation do
 
       it "should note when the mass operation definition is over" do
         contract.stubs(:stop_mass_operation_definition).raises 'called in the wrong order'
-        contract.stubs(:mark_for_execution).with do |_|
+        contract.stubs(:start_mass_operation_definition).with do |_|
           contract.stubs :stop_mass_operation_definition
           true
         end
@@ -193,22 +180,10 @@ describe ConveyorBelt::MassOperation do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
         contract.stubs :stop_mass_operation_definition
-        contract.stubs :mark_for_execution
-        contract.stubs :mark_for_ignoring
       end
 
       it "should note that work is to be executed" do
         contract.expects(:start_mass_operation_definition).with mass_operation
-        mass_operation.execute
-      end
-
-      it "should NOT execute the target" do
-        contract.stubs(:mark_for_execution).raises 'should not have been called'
-        mass_operation.execute
-      end
-
-      it "should note that the missing target has been ignored" do
-        contract.expects(:mark_for_ignoring).with operation1.target_id
         mass_operation.execute
       end
 
@@ -225,22 +200,10 @@ describe ConveyorBelt::MassOperation do
         mass_operation.stubs(:operations).returns operations
         contract.stubs :start_mass_operation_definition
         contract.stubs :stop_mass_operation_definition
-        contract.stubs :mark_for_execution
-        contract.stubs :mark_for_ignoring
       end
 
       it "should note that work is to be executed" do
         contract.expects(:start_mass_operation_definition).with mass_operation
-        mass_operation.execute
-      end
-
-      it "should execute the found target" do
-        contract.expects(:mark_for_execution).with operation1.target_id
-        mass_operation.execute
-      end
-
-      it "should ignore the target that cannot be found" do
-        contract.expects(:mark_for_ignoring).with operation2.target_id
         mass_operation.execute
       end
 

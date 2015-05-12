@@ -27,7 +27,6 @@ module ConveyorBelt
       return @examined_list if @examined_list
       @examined_list = []
       tasks_to_execute.each do |t|
-        contract.send t[:task], t[:target_id]
         @examined_list << { 'target_id' => t[:target_id], 'task' => t[:task].to_s }
       end
       @examined_list
