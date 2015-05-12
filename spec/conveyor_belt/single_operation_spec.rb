@@ -51,5 +51,13 @@ describe ConveyorBelt::SingleOperation do
 
   end
 
+  describe "execute" do
+    it "should pass the target to the contract" do
+      target = Object.new
+      operation.stubs(:target).returns target
+      contract.expects(:execute).with target
+      operation.execute
+    end
+  end
 
 end

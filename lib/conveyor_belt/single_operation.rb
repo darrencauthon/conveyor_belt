@@ -17,6 +17,10 @@ module ConveyorBelt
       @target ||= contract.find target_id
     end
 
+    def execute
+      contract.execute target
+    end
+
   end
 
 end
