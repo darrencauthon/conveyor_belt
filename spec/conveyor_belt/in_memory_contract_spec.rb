@@ -21,6 +21,19 @@ describe ConveyorBelt::InMemoryContract do
     end
   end
 
+  describe "execute" do
+
+    let(:target_id) { Object.new }
+
+    it "should look up the target, then call perform with it" do
+      target = Object.new
+      contract.stubs(:find).with(target_id).returns target
+      contract.expects(:perform).with target
+      contract.execute target_id
+    end
+
+  end
+
   describe "execute target" do
     it "should store the target id" do
       id1, id2 = random_string, random_string

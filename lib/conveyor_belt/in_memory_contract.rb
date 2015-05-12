@@ -28,6 +28,10 @@ module ConveyorBelt
       end
     end
 
+    def execute target_id
+      perform find(target_id)
+    end
+
   end
 
 end
